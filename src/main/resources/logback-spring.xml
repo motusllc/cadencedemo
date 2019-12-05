@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+    <springProfile name="internal-logging">
+        <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    </springProfile>
+    <springProfile name="logentries-logging">
+        <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+        <property name="patternString" value="%d{HH:mm:ss.SSS} host=${logentries.host} container=${logentries.container} uid=%X{X-UNIQUE-ID} [%thread] %-5level %logger{36} - %msg%n%rEx"  />
+        <appender name="LE"
+                  class="com.logentries.logback.LogentriesAppender">
+            <Debug>False</Debug>
+            <Token>${logentries.token}</Token>
+            <Ssl>True</Ssl>
+            <facility>USER</facility>
+            <layout>
+                <pattern>%d{HH:mm:ss.SSS} host=${logentries.host} container=${logentries.container} uid=%X{X-UNIQUE-ID} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </layout>
+        </appender>
+
+        <root level="${logentries.level:-INFO}">
+            <appender-ref ref="LE" />
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+</configuration>
