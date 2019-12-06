@@ -44,18 +44,6 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.2.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.logentries</groupId>
-            <artifactId>logentries-appender</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-
         <!-- Security update -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -91,96 +79,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.9.1</version>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.build.directory}/generated-sources/thrift/</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.10</version>
-                <configuration>
-                    <transitive>false</transitive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>get-personservice-thrift</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>get</goal>
-                        </goals>
-                        <configuration>
-                            <artifact>com.motus.personservice:personservice:${personservice.thrift.version}:thrift</artifact>
-                            <destination>${thrift.files.location}/personservice.thrift</destination>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Magically changes *.thrift files to *.java (in target/generated-sources/thrift)-->
-            <plugin>
-                <groupId>org.apache.thrift.tools</groupId>
-                <artifactId>thrift-maven-plugin</artifactId>
-                <version>0.1.13-SNAPSHOT</version>
-                <configuration>
-                    <thriftExecutable>${thrift.location}</thriftExecutable>
-                    <hashDependentPaths>false</hashDependentPaths>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>thrift-sources</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <thriftSourceRoot>${thrift.files.location}</thriftSourceRoot>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>thrift-test-sources</id>
-                        <phase>process-test-sources</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-<!--            <plugin>-->
-<!--                <groupId>org.owasp</groupId>-->
-<!--                <artifactId>dependency-check-maven</artifactId>-->
-<!--                <version>5.0.0-M2</version>-->
-<!--                <configuration>-->
-<!--                    <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>-->
-<!--                    <suppressionFile>http://nexus.service.motus.com/service/local/artifact/maven/redirect?r=releases&amp;g=com.motus&amp;a=owasp-dependency-suppression&amp;v=RELEASE&amp;p=xml</suppressionFile>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>check-vulns</id>-->
-<!--                        <phase>validate</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
         </plugins>
     </build>
     <profiles>
